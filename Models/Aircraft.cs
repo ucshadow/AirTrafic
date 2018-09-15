@@ -1,17 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AirTr.Models
 {
-    class Aircraft
+    public class Aircraft : INotifyPropertyChanged
     {
-        public float OriginLat { get; set; }                     // From
-        public float OriginLon { get; set; }                   // To
-        public float DestinationLat { get; set; }                   // To
-        public float DestinationLon { get; set; }                   // To
+        private float _originLat;
+        public float OriginLat {
+            get { return _originLat; }
+            set {
+                if (_originLat != value) { _originLat = value; OnPropertyChanged("OriginLat"); } } }                     // From
+
+
+        private float _originLon;
+        public float OriginLon {
+            get { return _originLon; }
+            set {
+                if (_originLon != value) { _originLon = value; OnPropertyChanged("OriginLon"); } } }                   // To
+
+
+        private float _destinationLat;
+        public float DestinationLat {
+            get { return _destinationLat; }
+            set { if (_destinationLat != value) { _destinationLat = value; OnPropertyChanged("DestinationLat"); } } }                   // To
+
+
+        private float _destinationLon;
+        public float DestinationLon {
+            get { return _destinationLon; }
+            set { if (_destinationLon != value) { _destinationLon = value; OnPropertyChanged("DestinationLon"); } }
+        }                     // To
+
+
         public int Id { get; set; }
         public string Identifier { get; set; }                       // Icao
         public int Altitude { get; set; }                           // Alt
@@ -32,5 +56,11 @@ namespace AirTr.Models
         public string Call { get; set; }
         public string From { get; set; }
         public string To { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(String propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

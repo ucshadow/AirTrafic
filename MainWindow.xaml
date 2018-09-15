@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1000" Width="1900">
     <Grid Background="#FF3E3E3E">
-        <!--<m:Map CredentialsProvider="" Center="55.8581, 9.8476" ZoomLevel="8" x:Name="mainMap"/>-->
+        <m:Map CredentialsProvider="1" Center="55.8581, 9.8476" ZoomLevel="8" x:Name="mainMap"/>
         <ListView HorizontalAlignment="Left" Height="432" Margin="10,527,0,0" VerticalAlignment="Top" Width="1872" Name="details">
 
             <ListView.ItemTemplate>
@@ -17,10 +17,12 @@
 
                         <TextBlock Text=" Origin: " />
                         <TextBlock Text="{Binding OriginLat}" />
+                        <TextBlock Text=" - " />
                         <TextBlock Text="{Binding OriginLon}" />
 
                         <TextBlock Text=" Destination: " />
                         <TextBlock Text="{Binding DestinationLat}" />
+                        <TextBlock Text=" - " />
                         <TextBlock Text="{Binding DestinationLon}" />
 
                         <TextBlock Text=" From: " />

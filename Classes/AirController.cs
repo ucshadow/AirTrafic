@@ -1,4 +1,5 @@
-﻿using AirTr.Interfaces;
+﻿using AirTr.Classes;
+using AirTr.Interfaces;
 using AirTr.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,8 +15,8 @@ namespace AirTr
     class AirController : IAirController
     {
 
-        private string _airQuery = "https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat=55.8581&lng=9.8476&fDstL=0&fDstU=100";
-        private string _inversaeGeoLocation = "https://geocode.xyz/ENGM%20Oslo%20Gardermoen,%20Norway?json=1";
+        //private string _airQuery = "https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat=55.8581&lng=9.8476&fDstL=0&fDstU=100";
+        //private string _inversaeGeoLocation = "https://geocode.xyz/ENGM%20Oslo%20Gardermoen,%20Norway?json=1";
 
         public ObservableCollection<Aircraft> AircraftList { get; set; }
 
@@ -77,15 +78,9 @@ namespace AirTr
             var data = e.Result;
             var asString = Encoding.UTF8.GetString(data);
             var res = JObject.Parse(asString);
-            Console.WriteLine($"To {res}");
-            var location = new MapLocation
-            {
-                Name = (string)res["standard"]["city"],
-                Lat = (float)res["latt"],
-                Lon = (float)res["longt"]
-            };
-            Console.WriteLine(location);
+            //Console.WriteLine($"To {res}");
             ChangeDestination(aircraft, (float)res["longt"], (float)res["latt"]);
+            MapController.DrawDestinationLine(aircraft);
         }
 
         private void FromGeoDataComplete(object sender, DownloadDataCompletedEventArgs e, Aircraft aircraft)
@@ -93,8 +88,9 @@ namespace AirTr
             var data = e.Result;
             var asString = Encoding.UTF8.GetString(data);
             var res = JObject.Parse(asString);
-            Console.WriteLine($"From {res}");
+            //Console.WriteLine($"From {res}");
             ChangeOrigin(aircraft, (float)res["longt"], (float)res["latt"]);
+            MapController.DrawOriginLine(aircraft);
         }
 
         private string TryParseString(Object o)
@@ -168,27 +164,6 @@ namespace AirTr
             foreach(var d in dataArray)
             {
 
-                //var Id = d["Id"];
-                //var Identifier = d["Icao"];
-                //var Altitude = d["Alt"];
-                //var Lat = d["Lat"];
-                //var Lon = d["Long"];
-                //var Time = d["PosTime"];
-                //var Speed = d["Spd"];
-                //var Type = d["Type"];
-                //var Model = d["Mdl"];
-                //var Manufacturer = d["Man"];
-                //var Year = d["Year"];
-                //var Operator = d["Op"];
-                //var VerticalSpeed = d["Vsi"];
-                //var Turbulence = d["WTC"];
-                //var Species = d["Species"];
-                //var Military = d["Mil"];
-                //var Country = d["Cou"];
-                //var Call = d["Call"];
-                //var From = d["From"];
-                //var To = d["To"];
-
                 var airCraft = new Aircraft
                 {
                     Id = d["Id"] == null ? -1 : (int)d["Id"],
@@ -215,6 +190,7 @@ namespace AirTr
                 if(airCraft != null)
                 {
                     AircraftList.Add(airCraft);
+                    MapController.AddImageToMap(airCraft.Lat, airCraft.Lon);                    
                     QueryGeoLocation(airCraft);
                 }
             }
