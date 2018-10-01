@@ -36,15 +36,11 @@ namespace AirTr
             _map = mainMap;
             _map.CredentialsProvider = new ApplicationIdCredentialsProvider("");
             _map.Focus();
+            _provider = new AirController();
             MapController.Map = _map;
             MapController.CreateImages();
-            _provider = new AirController();
-
+            MapController.AircraftList = _provider.AircraftList;            
             FileHandler.CreateLocationFile();
-
-            //_obs.Add(new Aircraft{ Id = 12, Identifier = "asd", Model = "Small" });
-            //_obs.Add(new Aircraft{ Id = 14, Identifier = "4", Model = "Large" });
-            //_obs.Add(new Aircraft{ Id = 13, Identifier = "Hello", Model = "Smal2l" });
 
             _provider.GetAircrafts(55.8581f, 9.8476f, 120);
             details.ItemsSource = _provider.AircraftList;

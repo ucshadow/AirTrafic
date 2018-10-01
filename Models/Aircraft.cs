@@ -35,6 +35,12 @@ namespace AirTr.Models
             set { if (_destinationLon != value) { _destinationLon = value; OnPropertyChanged("DestinationLon"); } }
         }                     // To
 
+        public string _background;
+        public string Background {
+            get { return _background; }
+            set { if (_background != value) { _background = value; OnPropertyChanged("Background"); } }
+        }
+
 
         public int Id { get; set; }
         public string Identifier { get; set; }                       // Icao
@@ -55,7 +61,12 @@ namespace AirTr.Models
         public string Country { get; set; }                         // Cou 
         public string Call { get; set; }
         public string From { get; set; }
-        public string To { get; set; }
+        public string To { get; set; }        
+
+        public Aircraft()
+        {
+            Background = "#FFD2F0D8";
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(String propertyName)

@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace AirTr.Classes
 {
@@ -23,7 +24,10 @@ namespace AirTr.Classes
         private static BitmapImage _black;
         private static BitmapImage _red;
 
-        private static Image _selected;
+        private static Image _selectedImage;
+        private static Aircraft _selectedAircraft;
+
+        public static ObservableCollection<Aircraft> AircraftList;
 
         public static void AddImageToMap(Aircraft aircraft)
         {
@@ -55,15 +59,27 @@ namespace AirTr.Classes
 
         private static void Image_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if(_selected != null)
+            if(_selectedImage != null)
             {
-                _selected.Source = _black;
+                _selectedImage.Source = _black;
             }
+
+            if(_selectedAircraft != null)
+            {
+                Console.WriteLine(_selectedAircraft.Background);
+                _selectedAircraft.Background = "#FFD2F0D8";
+            }
+
             var image = (Image)sender;
             image.Source = _red;
-            _selected = image;
-            var aircraft = (Aircraft)image.DataContext;
-            Console.WriteLine(aircraft.Call);
+            _selectedImage = image;
+
+            // get a refrence to the actual aircraft
+            var aircraft = AircraftList.Where(x => x.Id == ((Aircraft)image.DataContext).Id).First();
+            _selectedAircraft = aircraft;
+            aircraft.Background = "#f485d7";
+
+            AircraftList.Move(AircraftList.IndexOf(aircraft), 0);
         }
 
         public static void CreateImages()

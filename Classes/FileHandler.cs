@@ -24,7 +24,8 @@ namespace AirTr.Classes
 
             foreach(var l in locationsArr)
             {
-                if(l.Contains(address))
+                var locationName = l.Split(':')[0];
+                if(locationName == address)
                 {
                     Console.WriteLine($"{address} found in {l}");
                     var data = l.Split(':')[1].Split(',');

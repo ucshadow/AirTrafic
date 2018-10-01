@@ -13,7 +13,7 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <WrapPanel Height="60"  Background="#FFD2F0D8">
+                    <WrapPanel Height="60"  Background="{Binding Background}">
 
                         <Image Margin="2">
                             <Image.Source>
