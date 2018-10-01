@@ -9,66 +9,151 @@
         Title="MainWindow" Height="1000" Width="1900">
     <Grid Background="#FF3E3E3E">
         <m:Map CredentialsProvider="1" Center="55.8581, 9.8476" ZoomLevel="8" x:Name="mainMap"/>
-        <ListView HorizontalAlignment="Left" Height="432" Margin="10,527,0,0" VerticalAlignment="Top" Width="1872" Name="details">
+        <ListView HorizontalAlignment="Left" Height="300" Margin="10,639,0,0" VerticalAlignment="Top" Name="details" Width="1872">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <WrapPanel>
+                    <WrapPanel Height="60"  Background="#FFD2F0D8">
 
-                        <TextBlock Text=" Origin: " />
-                        <TextBlock Text="{Binding OriginLat}" />
-                        <TextBlock Text=" - " />
-                        <TextBlock Text="{Binding OriginLon}" />
+                        <Image Margin="2">
+                            <Image.Source>
+                                <BitmapImage UriSource="file:///E:/hd w/YoonA/cc2.png"/>
+                            </Image.Source>
+                        </Image>
 
-                        <TextBlock Text=" Destination: " />
-                        <TextBlock Text="{Binding DestinationLat}" />
-                        <TextBlock Text=" - " />
-                        <TextBlock Text="{Binding DestinationLon}" />
+                        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Margin="2">
 
-                        <TextBlock Text=" From: " />
-                        <TextBlock Text="{Binding From}" />
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Origin: " />
+                                <TextBlock Text="{Binding OriginLat}" />
+                                <TextBlock Text=" - " />
+                                <TextBlock Text="{Binding OriginLon}" />
+                            </WrapPanel>
 
-                        <TextBlock Text=" To: " />
-                        <TextBlock Text="{Binding To}" />
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Destination: " />
+                                <TextBlock Text="{Binding DestinationLat}" />
+                                <TextBlock Text=" - " />
+                                <TextBlock Text="{Binding DestinationLon}" />
+                            </WrapPanel>
 
-                        <TextBlock Text="Id: " />
-                        <TextBlock Text="{Binding Id}" />
-                        <TextBlock Text=" Identifier: " />
-                        <TextBlock Text="{Binding Identifier}" />
-                        <TextBlock Text=" Altitude: " />
-                        <TextBlock Text="{Binding Altitude}" />
 
-                        <TextBlock Text=" Lat: " />
-                        <TextBlock Text="{Binding Lat}" />
-                        <TextBlock Text=" Lon: " />
-                        <TextBlock Text="{Binding Lon}" />
-                        <TextBlock Text=" Time: " />
-                        <TextBlock Text="{Binding Time}" />
-                        <TextBlock Text=" Speed: " />
-                        <TextBlock Text="{Binding Speed}" />
-                        <TextBlock Text=" Type: " />
-                        <TextBlock Text="{Binding Type}" />
-                        <TextBlock Text=" Model: " />
-                        <TextBlock Text="{Binding Model}" />
-                        <TextBlock Text=" Manufacturer: " />
-                        <TextBlock Text="{Binding Manufacturer}" />
-                        <TextBlock Text=" Year: " />
-                        <TextBlock Text="{Binding Year}" />
-                        <TextBlock Text=" Operator: " />
-                        <TextBlock Text="{Binding Operator}" />
-                        <TextBlock Text=" Vertical speed: " />
-                        <TextBlock Text="{Binding VerticalSpeed}" />
-                        <TextBlock Text=" Turbulence: " />
-                        <TextBlock Text="{Binding Turbulence}" />
-                        <TextBlock Text=" Species: " />
-                        <TextBlock Text="{Binding Species}" />
-                        <TextBlock Text=" Military: " />
-                        <TextBlock Text="{Binding Military}" />
-                        <TextBlock Text=" Country: " />
-                        <TextBlock Text="{Binding Country}" />
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" From: " />
+                                <TextBlock Text="{Binding From}" />
+                            </WrapPanel>
+
+                        </WrapPanel>
+
+                        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Margin="2">
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" To: " />
+                                <TextBlock Text="{Binding To}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Id: " />
+                                <TextBlock Text="{Binding Id}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Identifier: " />
+                                <TextBlock Text="{Binding Identifier}" />
+                            </WrapPanel>
+                        </WrapPanel>
+
+                        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Margin="2">
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Altitude: " />
+                                <TextBlock Text="{Binding Altitude}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Lat: " />
+                                <TextBlock Text="{Binding Lat}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Lon: " />
+                                <TextBlock Text="{Binding Lon}" />
+                            </WrapPanel>
+                        </WrapPanel>
+
+                        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Margin="2">
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Time: " />
+                                <TextBlock Text="{Binding Time}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Speed: " />
+                                <TextBlock Text="{Binding Speed}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Type: " />
+                                <TextBlock Text="{Binding Type}" />
+                            </WrapPanel>
+                        </WrapPanel>
+
+                        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Margin="2">
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Model: " />
+                                <TextBlock Text="{Binding Model}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Manufacturer: " />
+                                <TextBlock Text="{Binding Manufacturer}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Year: " />
+                                <TextBlock Text="{Binding Year}" />
+                            </WrapPanel>
+                        </WrapPanel>
+
+                        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Margin="2">
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Operator: " />
+                                <TextBlock Text="{Binding Operator}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Vertical speed: " />
+                                <TextBlock Text="{Binding VerticalSpeed}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Turbulence: " />
+                                <TextBlock Text="{Binding Turbulence}" />
+                            </WrapPanel>
+                        </WrapPanel>
+
+                        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Margin="2">
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Species: " />
+                                <TextBlock Text="{Binding Species}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Military: " />
+                                <TextBlock Text="{Binding Military}" />
+                            </WrapPanel>
+
+                            <WrapPanel Height="18">
+                                <TextBlock Text=" Country: " />
+                                <TextBlock Text="{Binding Country}" />
+                            </WrapPanel>
+                        </WrapPanel>
+                        
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
+
+            <!--<WrapPanel>
+                
+            </WrapPanel>-->
             
         </ListView>
         <Button Content="Button" HorizontalAlignment="Left" Margin="1766,468,0,0" VerticalAlignment="Top" Width="75" Click="ButtClick"/>

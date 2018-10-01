@@ -47,28 +47,48 @@ namespace AirTr
             }
         }
 
-        private void QueryGeoLocation(Aircraft s) // todo: add caching!
+        private void QueryGeoLocation(Aircraft aircraft) // added caching! toDo: test caching :D
         {
-            if(s.From.Length > 2)
+            if(aircraft.From.Length > 2)
             {
-                using (var c = new WebClient())
-                {
-                    c.DownloadDataAsync(new Uri($"https://geocode.xyz/" +
-                        $"{s.From}?json=1"));
 
-                    c.DownloadDataCompleted += (sender, e) => FromGeoDataComplete(sender, e, s);
+                var exists = FileHandler.LocationExists(aircraft.From);
+                if(exists != null)
+                {
+                    ChangeOrigin(aircraft, exists.Item1, exists.Item2);
+                }
+
+                else
+                {
+                    using (var c = new WebClient())
+                    {
+                        c.DownloadDataAsync(new Uri($"https://geocode.xyz/" +
+                            $"{aircraft.From}?json=1"));
+
+                        c.DownloadDataCompleted += (sender, e) => FromGeoDataComplete(sender, e, aircraft);
+                    }
                 }
             }
 
-            if(s.To.Length > 2)
+            if(aircraft.To.Length > 2)
             {
-                using (var c = new WebClient())
-                {
-                    var u = new Uri($"https://geocode.xyz/" + $"{s.To}?json=1");
-                    Console.WriteLine(u);
-                    c.DownloadDataAsync(u);
 
-                    c.DownloadDataCompleted += (sender, e) => ToGeoDataComplete(sender, e, s);
+                var exists = FileHandler.LocationExists(aircraft.To);
+                if (exists != null)
+                {
+                    ChangeDestination(aircraft, exists.Item1, exists.Item2);
+                }
+
+                else
+                {
+                    using (var c = new WebClient())
+                    {
+                        var u = new Uri($"https://geocode.xyz/" + $"{aircraft.To}?json=1");
+                        //Console.WriteLine(u);
+                        c.DownloadDataAsync(u);
+
+                        c.DownloadDataCompleted += (sender, e) => ToGeoDataComplete(sender, e, aircraft);
+                    }
                 }
             }
         }
@@ -80,7 +100,8 @@ namespace AirTr
             var res = JObject.Parse(asString);
             //Console.WriteLine($"To {res}");
             ChangeDestination(aircraft, (float)res["longt"], (float)res["latt"]);
-            MapController.DrawDestinationLine(aircraft);
+            FileHandler.AddLocation(aircraft.From, (float)res["longt"], (float)res["latt"]);
+            //MapController.DrawDestinationLine(aircraft);
         }
 
         private void FromGeoDataComplete(object sender, DownloadDataCompletedEventArgs e, Aircraft aircraft)
@@ -90,7 +111,8 @@ namespace AirTr
             var res = JObject.Parse(asString);
             //Console.WriteLine($"From {res}");
             ChangeOrigin(aircraft, (float)res["longt"], (float)res["latt"]);
-            MapController.DrawOriginLine(aircraft);
+            FileHandler.AddLocation(aircraft.To, (float)res["longt"], (float)res["latt"]);
+            //MapController.DrawOriginLine(aircraft);
         }
 
         private string TryParseString(Object o)
@@ -105,19 +127,19 @@ namespace AirTr
             }
         }
 
-        private void QueryGeoLocation() // todo: add caching!
-        {
-            foreach(var s in AircraftList)
-            {
-                using (var c = new WebClient())
-                {
-                    c.DownloadDataAsync(new Uri($"https://geocode.xyz/" +
-                        $"{s.From}?json=1"));
+        //private void QueryGeoLocation() // todo: add caching!
+        //{
+        //    foreach(var s in AircraftList)
+        //    {
+        //        using (var c = new WebClient())
+        //        {
+        //            c.DownloadDataAsync(new Uri($"https://geocode.xyz/" +
+        //                $"{s.From}?json=1"));
 
-                    c.DownloadDataCompleted += (sender, e) => OriginGeoDataComplete(sender, e, s);
-                }
-            }
-        }
+        //            c.DownloadDataCompleted += (sender, e) => OriginGeoDataComplete(sender, e, s);
+        //        }
+        //    }
+        //}
 
         private void OriginGeoDataComplete(object sender, DownloadDataCompletedEventArgs e, Aircraft aircraft)
         {
@@ -127,27 +149,29 @@ namespace AirTr
             ChangeOrigin(aircraft, (float)res["longt"], (float)res["latt"]);
         }
 
-        private void ChangeOrigin(Aircraft aircrfat, float lon, float lat)
+        private void ChangeOrigin(Aircraft aircraft, float lon, float lat)
         {
             foreach(var a in AircraftList)
             {
-                if(a.Id == aircrfat.Id)
+                if(a.Id == aircraft.Id)
                 {
                     a.OriginLon = lon;
                     a.OriginLat = lat;
+                    MapController.DrawOriginLine(aircraft);
                     return;
                 }
             }
         }
 
-        private void ChangeDestination(Aircraft aircrfat, float lon, float lat)
+        private void ChangeDestination(Aircraft aircraft, float lon, float lat)
         {
             foreach (var a in AircraftList)
             {
-                if (a.Id == aircrfat.Id)
+                if (a.Id == aircraft.Id)
                 {
                     a.DestinationLon = lon;
                     a.DestinationLat = lat;
+                    MapController.DrawDestinationLine(aircraft);
                     return;
                 }
             }
@@ -190,7 +214,7 @@ namespace AirTr
                 if(airCraft != null)
                 {
                     AircraftList.Add(airCraft);
-                    MapController.AddImageToMap(airCraft.Lat, airCraft.Lon);                    
+                    MapController.AddImageToMap(airCraft);                    
                     QueryGeoLocation(airCraft);
                 }
             }
