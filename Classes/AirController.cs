@@ -127,19 +127,10 @@ namespace AirTr
             }
         }
 
-        //private void QueryGeoLocation() // todo: add caching!
-        //{
-        //    foreach(var s in AircraftList)
-        //    {
-        //        using (var c = new WebClient())
-        //        {
-        //            c.DownloadDataAsync(new Uri($"https://geocode.xyz/" +
-        //                $"{s.From}?json=1"));
-
-        //            c.DownloadDataCompleted += (sender, e) => OriginGeoDataComplete(sender, e, s);
-        //        }
-        //    }
-        //}
+        public void ClearAircrafts()
+        {
+            MapController.ClearAllDrawings();
+        }
 
         private void OriginGeoDataComplete(object sender, DownloadDataCompletedEventArgs e, Aircraft aircraft)
         {

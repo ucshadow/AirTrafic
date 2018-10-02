@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Classes\AirController.cs" />
     <Compile Include="Classes\FileHandler.cs" />
+    <Compile Include="Classes\MainLoop.cs" />
     <Compile Include="Classes\MapController.cs" />
     <Compile Include="Interfaces\IAirController.cs" />
     <Compile Include="MainWindow.xaml.cs">

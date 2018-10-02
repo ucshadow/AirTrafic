@@ -27,9 +27,9 @@ namespace AirTr.Classes
                 var locationName = l.Split(':')[0];
                 if(locationName == address)
                 {
-                    Console.WriteLine($"{address} found in {l}");
+                    //Console.WriteLine($"{address} found in {l}");
                     var data = l.Split(':')[1].Split(',');
-                    Console.WriteLine($"data is {data[0]} and {data[1]}");
+                    //Console.WriteLine($"data is {data[0]} and {data[1]}");
                     return new Tuple<float, float>(float.Parse(data[0]), float.Parse(data[1]));
                 }
             }

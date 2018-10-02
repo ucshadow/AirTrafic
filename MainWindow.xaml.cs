@@ -27,7 +27,7 @@ namespace AirTr
     {
 
         private  Map _map;
-        private AirController _provider;
+        //private AirController _provider;
         //private ObservableCollection<Aircraft> _obs = new ObservableCollection<Aircraft>();
 
         public WindowController()
@@ -36,22 +36,20 @@ namespace AirTr
             _map = mainMap;
             _map.CredentialsProvider = new ApplicationIdCredentialsProvider("");
             _map.Focus();
-            _provider = new AirController();
+            var loop = new MainLoop() { Dispatcher = Dispatcher };
             MapController.Map = _map;
             MapController.CreateImages();
-            MapController.AircraftList = _provider.AircraftList;            
+            MapController.AircraftList = loop.GetAircraftList();            
             FileHandler.CreateLocationFile();
 
-            _provider.GetAircrafts(55.8581f, 9.8476f, 120);
-            details.ItemsSource = _provider.AircraftList;
-
-            
+            loop.StartSequence();
+            details.ItemsSource = loop.GetAircraftList();
 
         }
 
         private void ButtClick(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(_provider.AircraftList.Count);
+            Console.WriteLine("1");
         }
     }
 }

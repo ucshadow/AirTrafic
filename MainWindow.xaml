@@ -120,8 +120,8 @@
                             </WrapPanel>
 
                             <WrapPanel Height="18">
-                                <TextBlock Text=" Vertical speed: " />
-                                <TextBlock Text="{Binding VerticalSpeed}" />
+                                <TextBlock Text=" Call: " />
+                                <TextBlock Text="{Binding Call}" />
                             </WrapPanel>
 
                             <WrapPanel Height="18">

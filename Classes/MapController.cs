@@ -27,13 +27,13 @@ namespace AirTr.Classes
         private static Image _selectedImage;
         private static Aircraft _selectedAircraft;
 
+        private static MapLayer _imageLayer = new MapLayer();
+        private static MapLayer _lineLayer = new MapLayer();
+
         public static ObservableCollection<Aircraft> AircraftList;
 
         public static void AddImageToMap(Aircraft aircraft)
         {
-            MapLayer imageLayer = new MapLayer();
-
-
             var image = new Image
             {
                 Height = 16,
@@ -52,9 +52,9 @@ namespace AirTr.Classes
             var position = PositionOrigin.Center;
 
             //Add the image to the defined map layer
-            imageLayer.AddChild(image, location, position);
+            _imageLayer.AddChild(image, location, position);
             //Add the image layer to the map
-            Map.Children.Add(imageLayer);
+            
         }
 
         private static void Image_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -97,6 +97,9 @@ namespace AirTr.Classes
             _red.DecodePixelHeight = 16;
             _red.EndInit();
 
+            Map.Children.Add(_imageLayer);
+            Map.Children.Add(_lineLayer);
+
         }
 
         public static void DrawOriginLine(Aircraft aircraft)
@@ -112,15 +115,17 @@ namespace AirTr.Classes
                 _colors.Add(aircraft.Id, color);
             }
 
-            MapPolyline polyline = new MapPolyline();
-            polyline.Stroke = color;
-            polyline.StrokeThickness = 3;
-            polyline.Opacity = 0.5;
-            polyline.Locations = new LocationCollection() {
+            MapPolyline polyline = new MapPolyline
+            {
+                Stroke = color,
+                StrokeThickness = 3,
+                Opacity = 0.5,
+                Locations = new LocationCollection() {
             new Location(aircraft.OriginLat, aircraft.OriginLon),
-            new Location(aircraft.Lat, aircraft.Lon)};
-
-            Map.Children.Add(polyline);
+            new Location(aircraft.Lat, aircraft.Lon)}
+            };
+            _lineLayer.Children.Add(polyline);
+            
         }
 
         public static void DrawDestinationLine(Aircraft aircraft)
@@ -137,15 +142,25 @@ namespace AirTr.Classes
                 _colors.Add(aircraft.Id, color);
             }
 
-            MapPolyline polyline = new MapPolyline();
-            polyline.Stroke = color;
-            polyline.StrokeThickness = 1;
-            polyline.Opacity = 0.5;
-            polyline.Locations = new LocationCollection() {
+            MapPolyline polyline = new MapPolyline
+            {
+                Stroke = color,
+                StrokeThickness = 1,
+                Opacity = 0.5,
+                Locations = new LocationCollection() {
             new Location(aircraft.DestinationLat, aircraft.DestinationLon),
-            new Location(aircraft.Lat, aircraft.Lon)};
+            new Location(aircraft.Lat, aircraft.Lon)}
+            };
 
-            Map.Children.Add(polyline);
+            _lineLayer.Children.Add(polyline);
+        }
+
+        // todo: add history path.
+        internal static void ClearAllDrawings()
+        {
+            _imageLayer.Children.Clear();
+            _lineLayer.Children.Clear();
+            AircraftList.Clear();
         }
 
         [Obsolete("AddImageToMap(float, float) is deprecated, use AddImageToMap(Aircraft) instead")]
