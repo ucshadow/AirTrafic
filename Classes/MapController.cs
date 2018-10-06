@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.IO;
 using System.Collections.ObjectModel;
+using static AirTr.Util.Helpers;
 
 namespace AirTr.Classes
 {
@@ -32,8 +33,21 @@ namespace AirTr.Classes
 
         public static ObservableCollection<Aircraft> AircraftList;
 
-        public static void AddImageToMap(Aircraft aircraft)
+        public static void AddAircraftToMap(Aircraft aircraft)
         {
+            var a = AircraftExists(aircraft);
+            if (a != null)
+            {
+                UpdateAircraftPosition(a, aircraft);
+                return;
+            }
+            AddImageToMap(aircraft);
+            
+        }
+
+        private static void AddImageToMap(Aircraft aircraft)
+        {
+            //Print($"Adding to map {aircraft.Id}");
             var image = new Image
             {
                 Height = 16,
@@ -43,18 +57,44 @@ namespace AirTr.Classes
             };
 
             ToolTipService.SetToolTip(image, new ToolTip() { Content = aircraft.Manufacturer });
-
             image.MouseDown += Image_PreviewMouseDown;
-
-            //The map location to place the image at
             var location = new Location() { Latitude = aircraft.Lat, Longitude = aircraft.Lon };
-            //Center the image around the location specified
             var position = PositionOrigin.Center;
-
-            //Add the image to the defined map layer
             _imageLayer.AddChild(image, location, position);
-            //Add the image layer to the map
+        }
+
+        private static void UpdateAircraftPosition(Aircraft oldAircraft, Aircraft newAircraft)
+        {
+            oldAircraft.Lat = newAircraft.Lat;
+            oldAircraft.Lon = newAircraft.Lon;
             
+            foreach(var o in _imageLayer.Children)
+            {
+                var asUI = (System.Windows.UIElement)o;
+                var asImage = (Image)asUI;
+                var aircraft = (Aircraft)asImage.DataContext;
+
+                if(aircraft.Id == oldAircraft.Id)
+                {
+                    _imageLayer.Children.Remove(asUI);
+                    AddImageToMap(newAircraft);
+                    return;
+                }
+            }
+            AddImageToMap(newAircraft);
+        }
+
+        private static Aircraft AircraftExists(Aircraft aircraft)
+        {
+            foreach(var a in AircraftList)
+            {
+                if(a.Id == aircraft.Id)
+                {
+                    //Print($"Aircraft exists {a.Id}");
+                    return a;
+                }
+            }
+            return null;
         }
 
         private static void Image_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -104,6 +144,9 @@ namespace AirTr.Classes
 
         public static void DrawOriginLine(Aircraft aircraft)
         {
+
+            //Print($"Drawing new Origin line lat {aircraft.OriginLat} lon {aircraft.OriginLon}");
+
             var color = new SolidColorBrush(Colors.Aqua);
             if (_colors.ContainsKey(aircraft.Id))
             {
@@ -130,6 +173,8 @@ namespace AirTr.Classes
 
         public static void DrawDestinationLine(Aircraft aircraft)
         {
+
+            //Print($"Drawing new Destination line lat {aircraft.DestinationLat} lon {aircraft.DestinationLon}");
 
             var color = new SolidColorBrush(Colors.Aqua);
             if (_colors.ContainsKey(aircraft.Id))
@@ -158,9 +203,9 @@ namespace AirTr.Classes
         // todo: add history path.
         internal static void ClearAllDrawings()
         {
-            _imageLayer.Children.Clear();
+            //_imageLayer.Children.Clear();
             _lineLayer.Children.Clear();
-            AircraftList.Clear();
+            //AircraftList.Clear();
         }
 
         [Obsolete("AddImageToMap(float, float) is deprecated, use AddImageToMap(Aircraft) instead")]

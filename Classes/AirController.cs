@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static AirTr.Util.Helpers;
 
 namespace AirTr
 {
@@ -55,6 +56,7 @@ namespace AirTr
                 var exists = FileHandler.LocationExists(aircraft.From);
                 if(exists != null)
                 {
+                    //Print($"Aircraft from {aircraft.From} already exists with coords {exists.Item1} {exists.Item2}");
                     ChangeOrigin(aircraft, exists.Item1, exists.Item2);
                 }
 
@@ -62,6 +64,7 @@ namespace AirTr
                 {
                     using (var c = new WebClient())
                     {
+                        //Print($"Downloading new From geo data...");
                         c.DownloadDataAsync(new Uri($"https://geocode.xyz/" +
                             $"{aircraft.From}?json=1"));
 
@@ -76,6 +79,7 @@ namespace AirTr
                 var exists = FileHandler.LocationExists(aircraft.To);
                 if (exists != null)
                 {
+                    //Print($"Aircraft to {aircraft.To} already exists with coords {exists.Item1} {exists.Item2}");
                     ChangeDestination(aircraft, exists.Item1, exists.Item2);
                 }
 
@@ -83,6 +87,7 @@ namespace AirTr
                 {
                     using (var c = new WebClient())
                     {
+                        //Print($"Downloading new To geo data...");
                         var u = new Uri($"https://geocode.xyz/" + $"{aircraft.To}?json=1");
                         //Console.WriteLine(u);
                         c.DownloadDataAsync(u);
@@ -148,7 +153,7 @@ namespace AirTr
                 {
                     a.OriginLon = lon;
                     a.OriginLat = lat;
-                    MapController.DrawOriginLine(aircraft);
+                    MapController.DrawOriginLine(a);
                     return;
                 }
             }
@@ -162,7 +167,7 @@ namespace AirTr
                 {
                     a.DestinationLon = lon;
                     a.DestinationLat = lat;
-                    MapController.DrawDestinationLine(aircraft);
+                    MapController.DrawDestinationLine(a);
                     return;
                 }
             }
@@ -204,8 +209,11 @@ namespace AirTr
                 };
                 if(airCraft != null)
                 {
-                    AircraftList.Add(airCraft);
-                    MapController.AddImageToMap(airCraft);                    
+                    // todo: on update (not redraw) check if aircraft is already in the list
+                    if(!AircraftList.Any(a => a.Id == airCraft.Id)) {
+                        AircraftList.Add(airCraft);
+                    }
+                    MapController.AddAircraftToMap(airCraft);                    
                     QueryGeoLocation(airCraft);
                 }
             }

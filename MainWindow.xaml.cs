@@ -39,7 +39,8 @@ namespace AirTr
             var loop = new MainLoop() { Dispatcher = Dispatcher };
             MapController.Map = _map;
             MapController.CreateImages();
-            MapController.AircraftList = loop.GetAircraftList();            
+            MapController.AircraftList = loop.GetAircraftList();
+            objectTracker.DataContext = loop.GetAircraftList();
             FileHandler.CreateLocationFile();
 
             loop.StartSequence();

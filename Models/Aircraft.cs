@@ -35,18 +35,32 @@ namespace AirTr.Models
             set { if (_destinationLon != value) { _destinationLon = value; OnPropertyChanged("DestinationLon"); } }
         }                     // To
 
-        public string _background;
+        private string _background;
         public string Background {
             get { return _background; }
             set { if (_background != value) { _background = value; OnPropertyChanged("Background"); } }
         }
 
+        private float _lat;
+        public float Lat {
+            get { return _lat; }
+            set { if (_lat != value) { _lat = value; OnPropertyChanged("Lat"); } }
+        }
+
+        private float _lon;
+        public float Lon {
+            get { return _lon; }
+            set { if (_lon != value) { _lon = value; OnPropertyChanged("Lon"); } }
+        }
+
+
+        //toDo update the rest if needed
+
 
         public int Id { get; set; }
         public string Identifier { get; set; }                       // Icao
         public int Altitude { get; set; }                           // Alt
-        public float Lat { get; set; }
-        public float Lon { get; set; }
+
         public long Time { get; set; }                              // PosTime
         public float Speed { get; set; }                            // Spd, speed in knots
         public string Type { get; set; }

@@ -21,7 +21,7 @@ namespace AirTr.Classes
 
         public MainLoop()
         {
-            UpdateInterval = 20000;
+            UpdateInterval = 30000;
             AirController = new AirController();
         }
 
@@ -35,7 +35,7 @@ namespace AirTr.Classes
         {
             if (Radius == 0) Radius = 100;
 
-            // todo: erase everything here
+            // todo: update instead of redraw
 
             AirController.ClearAircrafts();
 
