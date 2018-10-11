@@ -30,6 +30,7 @@ namespace AirTr.Classes
 
         private static MapLayer _imageLayer = new MapLayer();
         private static MapLayer _lineLayer = new MapLayer();
+        private static MapLayer _historyLayer = new MapLayer();
 
         public static ObservableCollection<Aircraft> AircraftList;
 
@@ -43,6 +44,11 @@ namespace AirTr.Classes
             }
             AddImageToMap(aircraft);
             
+        }
+
+        public static void AddHistoryLine()
+        {
+
         }
 
         private static void AddImageToMap(Aircraft aircraft)
@@ -158,16 +164,7 @@ namespace AirTr.Classes
                 _colors.Add(aircraft.Id, color);
             }
 
-            MapPolyline polyline = new MapPolyline
-            {
-                Stroke = color,
-                StrokeThickness = 3,
-                Opacity = 0.5,
-                Locations = new LocationCollection() {
-            new Location(aircraft.OriginLat, aircraft.OriginLon),
-            new Location(aircraft.Lat, aircraft.Lon)}
-            };
-            _lineLayer.Children.Add(polyline);
+            CreateLine(aircraft, 3, color, 0.7f);
             
         }
 
@@ -187,11 +184,16 @@ namespace AirTr.Classes
                 _colors.Add(aircraft.Id, color);
             }
 
+            CreateLine(aircraft, 2, color, 0.7f);
+        }
+
+        private static void CreateLine(Aircraft aircraft, int thickness, SolidColorBrush color, float opacity)
+        {
             MapPolyline polyline = new MapPolyline
             {
                 Stroke = color,
-                StrokeThickness = 1,
-                Opacity = 0.5,
+                StrokeThickness = thickness,
+                Opacity = opacity,
                 Locations = new LocationCollection() {
             new Location(aircraft.DestinationLat, aircraft.DestinationLon),
             new Location(aircraft.Lat, aircraft.Lon)}
